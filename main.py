@@ -1,5 +1,7 @@
 # Importing libraries
 from scipy.integrate import solve_ivp
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import CheckButtons
@@ -135,6 +137,7 @@ temps_dec = np.array(temps_dec)
 steady_states_dec = steady_states_dec[::-1]
 temps_dec = temps_dec[::-1] 
 
+'''
 # Create interactive plots
 fig = plt.figure(figsize=(16, 10))
 plt.suptitle('Fractions of daisies and temperatures as function of the luminosity', fontsize=16)
@@ -208,7 +211,7 @@ lines2 = [line_no_life, line_temp_inc, line_temp_dec, line_opt_temp, line_white_
 check1 = CheckButtons(ax=ax_check1, labels=labels1, actives=[True for _ in labels1])
 check2 = CheckButtons(ax=ax_check2, labels=labels2, actives=[True for _ in labels2])
 
-# Toggle visibility
+# Toggle s-python.debugpy-2025.0.1-linux-x64/package.jsonvisibility
 def func1(label):
     index = labels1.index(label)
     lines1[index].set_visible(not lines1[index].get_visible())
@@ -225,4 +228,106 @@ check2.on_clicked(func2)
 plt.tight_layout()
 plt.subplots_adjust(top=0.9)
 plt.show()
-#plt.savefig('Graphs.html', format='html')
+#plt.savefig('Graphs.html', format='html')'
+'''
+
+
+# Create interactive Plotly figure
+fig = make_subplots(
+    rows=1, cols=2,
+    subplot_titles=("Area Fractions", "Temperatures"),
+    shared_xaxes=True
+)
+
+# Add area fraction traces
+fig.add_trace(
+    go.Scatter(x=steady_states_inc[:, 0], y=steady_states_inc[:, 1], 
+               name='White daisies (increasing L)', 
+               line=dict(color='red'), visible=True),
+    row=1, col=1
+)
+fig.add_trace(
+    go.Scatter(x=steady_states_dec[:, 0], y=steady_states_dec[:, 1], 
+               name='White daisies (decreasing L)', 
+               line=dict(color='magenta'), visible='legendonly'),
+    row=1, col=1
+)
+fig.add_trace(
+    go.Scatter(x=steady_states_inc[:, 0], y=steady_states_inc[:, 2], 
+               name='Black daisies (increasing L)', 
+               line=dict(color='blue'), visible=True),
+    row=1, col=1
+)
+fig.add_trace(
+    go.Scatter(x=steady_states_dec[:, 0], y=steady_states_dec[:, 2], 
+               name='Black daisies (decreasing L)', 
+               line=dict(color='cyan'), visible='legendonly'),
+    row=1, col=1
+)
+fig.add_trace(
+    go.Scatter(x=steady_states_inc[:, 0], y=steady_states_inc[:, 4], 
+               name='Total daisies (increasing L)', 
+               line=dict(color='black'), visible=True),
+    row=1, col=1
+)
+fig.add_trace(
+    go.Scatter(x=steady_states_dec[:, 0], y=steady_states_dec[:, 4], 
+               name='Total daisies (decreasing L)', 
+               line=dict(color='green'), visible='legendonly'),
+    row=1, col=1
+)
+
+# Add temperature traces
+fig.add_trace(
+    go.Scatter(x=L_values, y=[calc_temp_no_life(L) for L in L_values], 
+               name='Temperature without life', 
+               line=dict(color='black'), visible=True),
+    row=1, col=2
+)
+fig.add_trace(
+    go.Scatter(x=temps_inc[:, 0], y=temps_inc[:, 1], 
+               name='Global temperature (increasing L)', 
+               line=dict(color='blue'), visible=True),
+    row=1, col=2
+)
+fig.add_trace(
+    go.Scatter(x=temps_dec[:, 0], y=temps_dec[:, 1], 
+               name='Global temperature (decreasing L)', 
+               line=dict(color='green'), visible='legendonly'),
+    row=1, col=2
+)
+fig.add_trace(
+    go.Scatter(x=[0.0, 2.0], y=[T_opt-273.15, T_opt-273.15], 
+               name='Optimal temperature', 
+               line=dict(color='yellow', dash='dash'), visible=True),
+    row=1, col=2
+)
+fig.add_trace(
+    go.Scatter(x=temps_inc[:, 0], y=temps_inc[:, 2], 
+               name='White daisies temperature', 
+               line=dict(color='cyan'), visible='legendonly'),
+    row=1, col=2
+)
+fig.add_trace(
+    go.Scatter(x=temps_inc[:, 0], y=temps_inc[:, 3], 
+               name='Black daisies temperature', 
+               line=dict(color='magenta'), visible='legendonly'),
+    row=1, col=2
+)
+
+# Update layout
+fig.update_layout(
+    title='Fractions of daisies and temperatures as function of the luminosity',
+    legend_title='Legend',
+    height=800,
+    width=1200
+)
+
+# Update x and y axis properties
+fig.update_xaxes(title_text="Luminosity", row=1, col=1)
+fig.update_xaxes(title_text="Luminosity", row=1, col=2)
+fig.update_yaxes(title_text="Area fractions", row=1, col=1)
+fig.update_yaxes(title_text="Temperature (°C)", row=1, col=2)
+
+# Save as interactive HTML
+fig.write_html('interactive_daisyworld.html')

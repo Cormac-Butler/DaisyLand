@@ -51,7 +51,7 @@ a_w0 = 0.01  # Initial fraction of white daisies
 a_b0 = 0.01  # Initial fraction of black daisies
 t_span = (0, 1000)
 
-L_values = np.linspace(0.6, 2, 1000)
+L_values = np.linspace(0, 2, 1000)
 steady_states = []
 temps_final = []
 temps_final2 = []
