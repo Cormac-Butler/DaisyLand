@@ -137,6 +137,29 @@ temps_dec = np.array(temps_dec)
 steady_states_dec = steady_states_dec[::-1]
 temps_dec = temps_dec[::-1] 
 
+# Function to save data to a file
+def save_data(filename, x_data, y_data):
+    with open(filename, 'w') as f:
+        for i in range(len(x_data)):
+            f.write(f"{x_data[i]} {y_data[i]}\n")
+
+# Save all data files
+# Fractions
+save_data("white_daisies_inc.dat", steady_states_inc[:, 0], steady_states_inc[:, 1])
+save_data("white_daisies_dec.dat", steady_states_dec[:, 0], steady_states_dec[:, 1])
+save_data("black_daisies_inc.dat", steady_states_inc[:, 0], steady_states_inc[:, 2])
+save_data("black_daisies_dec.dat", steady_states_dec[:, 0], steady_states_dec[:, 2])
+save_data("total_daisies_inc.dat", steady_states_inc[:, 0], steady_states_inc[:, 4])
+save_data("total_daisies_dec.dat", steady_states_dec[:, 0], steady_states_dec[:, 4])
+
+# Temperatures
+save_data("temp_no_life.dat", temps_inc[:, 0], temps_inc[:, 4])
+save_data("global_temp_inc.dat", temps_inc[:, 0], temps_inc[:, 1])
+save_data("global_temp_dec.dat", temps_dec[:, 0], temps_dec[:, 1])
+save_data("optimal_temp.dat", temps_inc[:, 0], np.ones_like(temps_inc[:, 0]) * (T_opt - 273.15))
+save_data("white_local_temp_inc.dat", temps_inc[:, 0], temps_inc[:, 2])
+save_data("black_local_temp_inc.dat", temps_inc[:, 0], temps_inc[:, 3])
+
 '''
 # Create interactive plots
 fig = plt.figure(figsize=(16, 10))
@@ -229,8 +252,6 @@ plt.tight_layout()
 plt.subplots_adjust(top=0.9)
 plt.show()
 #plt.savefig('Graphs.html', format='html')'
-'''
-
 
 # Create interactive Plotly figure
 fig = make_subplots(
@@ -331,3 +352,4 @@ fig.update_yaxes(title_text="Temperature (°C)", row=1, col=2)
 
 # Save as interactive HTML
 fig.write_html('interactive_daisyworld.html')
+'''
