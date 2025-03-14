@@ -182,7 +182,7 @@ ax_check2 = plt.subplot(grid[1, 1])
 ax_check1.axis('off')
 ax_check2.axis('off')
 
-# Define the labels and colors for area fractions
+# Define the labels for area fractions
 labels1 = [
     'Area fraction of white daisies for increasing L',
     'Area fraction of white daisies for decreasing L',
@@ -193,7 +193,7 @@ labels1 = [
 ]
 lines1 = [line_white_inc, line_white_dec, line_black_inc, line_black_dec, line_total_inc, line_total_dec]
 
-# Define the labels and colors for temperatures
+# Define the labels for temperatures
 labels2 = [
     'Temperature without life',
     'Global temperature for increasing luminosity',
@@ -204,11 +204,11 @@ labels2 = [
 ]
 lines2 = [line_no_life, line_temp_inc, line_temp_dec, line_opt_temp, line_white_temp_inc, line_black_temp_inc]
 
-# Create CheckButtons - positioned properly under each graph
+# Create CheckButtons
 check1 = CheckButtons(ax=ax_check1, labels=labels1, actives=[True for _ in labels1])
 check2 = CheckButtons(ax=ax_check2, labels=labels2, actives=[True for _ in labels2])
 
-# Define callback functions for toggle visibility
+# Toggle visibility
 def func1(label):
     index = labels1.index(label)
     lines1[index].set_visible(not lines1[index].get_visible())
@@ -225,3 +225,4 @@ check2.on_clicked(func2)
 plt.tight_layout()
 plt.subplots_adjust(top=0.9)
 plt.show()
+#plt.savefig('Graphs.html', format='html')
