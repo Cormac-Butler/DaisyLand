@@ -160,7 +160,7 @@ save_data("optimal_temp.dat", temps_inc[:, 0], np.ones_like(temps_inc[:, 0]) * (
 save_data("white_local_temp_inc.dat", temps_inc[:, 0], temps_inc[:, 2])
 save_data("black_local_temp_inc.dat", temps_inc[:, 0], temps_inc[:, 3])
 
-'''
+
 # Create interactive plots
 fig = plt.figure(figsize=(16, 10))
 plt.suptitle('Fractions of daisies and temperatures as function of the luminosity', fontsize=16)
@@ -352,4 +352,3 @@ fig.update_yaxes(title_text="Temperature (°C)", row=1, col=2)
 
 # Save as interactive HTML
 fig.write_html('interactive_daisyworld.html')
-'''
